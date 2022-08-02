@@ -14,3 +14,4 @@ Once grid list has been filled it is sent into the backtracking function.
 
 Once the puzzle is solved it is parsed back into a string and compared to the string inside the solutions column of panda data frame.
 
+If both the backtracking solution and original solution match the tests pass
