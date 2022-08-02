@@ -6,10 +6,11 @@ Dataset was pulled from kaggle.com 1,000,000 Sudoku puzzles + solution: (https:/
 
 # How its made:
 
-First pandas pulls the csv file labeled sudoku.
-The columns labeled puzzle and solution are each their own variable
+First pandas pulls the csv file labeled sudoku inside sudokuTest.py.
 
-For both the data containing puzzle and solution information it is parsed
-by a string into a 9x9 2d list. 0's indicate an empty space for the puzzle column.
+Each row for the column labeled 'quizzes' inside the dataframe is parsed into a 2d list for the backtracking algorithm. 0's indicate an empty space for the puzzle column. Grid is filled from left to right.
 
-Once the backtracking algorithm has finished it is turned back into a 81 character string and compared to the solution with a unit test
+Once grid list has been filled it is sent into the backtracking function.
+
+Once the puzzle is solved it is parsed back into a string and compared to the string inside the solutions column of panda data frame.
+
