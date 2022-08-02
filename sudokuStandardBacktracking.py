@@ -1,13 +1,6 @@
 import pandas as pd
 import unittest
-#Used for sudokuTest.py
-class Puzzle:
-    basestr = ""
-    def getstr(self):
-        return self.basestr
-    def setstr(self, s):
-        self.basestr = s
-
+#Parses 2d list back into string !!!USED for sudokuTest.py!!!
 def parseList(puzzlelist):
     basestr = ""
     for r in puzzlelist:
@@ -32,7 +25,7 @@ def readAndParse(quizstr):
     return grid     #Return the 2d list
 
 
-#Helper function for solverSudoku()
+#Helper function for solverSudoku(), moves to next empty cell (when cell == 0)
 def findNextCellToFill(grid, i, j):
         for x in range(i,9):
                 for y in range(j,9):
@@ -43,7 +36,7 @@ def findNextCellToFill(grid, i, j):
                         if grid[x][y] == 0:
                                 return x,y
         return -1,-1
-#Helper function for solveSudoku()
+#Helper function for solveSudoku(), returns true if row, column, and cube are valid for a given cell
 def isValid(grid, i, j, e):
         rowOk = all([e != grid[i][x] for x in range(9)])
         if rowOk:
@@ -57,7 +50,7 @@ def isValid(grid, i, j, e):
                                                 return False
                         return True
         return False
-#A standard backtracking algorithm
+#A standard backtracking algorithm, uses recursion.
 def solveSudoku(grid, i=0, j=0):
         i,j = findNextCellToFill(grid, i, j)
         if i == -1:
@@ -66,25 +59,13 @@ def solveSudoku(grid, i=0, j=0):
                 if isValid(grid,i,j,e):
                         grid[i][j] = e
                         if solveSudoku(grid, i, j):
-                                
-                                return True
+                                return True     #Returns corrected grid aswell
                         # Undo the current cell for backtracking
                         grid[i][j] = 0
         return False
 def main(basestr):
-    #Use pandas to read all rows but only the 1st column (puzzle)
-    puzzleDf = pd.read_csv('sudoku.csv', dtype='str', delimiter=',')
     #Loop thru each entry and solve the puzzle using the backtracking algorithm
-    for t in range(1):
-        
-        quiz = readAndParse(puzzleDf['quizzes'][t])
-        solveSudoku(quiz, i=0, j=0)
-        print(quiz)
-        answerstr = parseList(quiz)
-        print(answerstr)
-        sol = readAndParse(puzzleDf['solutions'][t])
-        message = "Puzzle was solved incorrectly!"
-        unittest.TestCase.assertEqual(answerstr, sol, message)
-        break
-            
-main()
+    quiz = readAndParse(basestr)
+    solveSudoku(quiz, i=0, j=0)
+    answerstr = parseList(quiz)
+    return answerstr
